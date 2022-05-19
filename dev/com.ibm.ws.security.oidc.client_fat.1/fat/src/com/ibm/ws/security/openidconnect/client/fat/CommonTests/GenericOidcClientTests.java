@@ -444,6 +444,7 @@ public class GenericOidcClientTests extends CommonTest {
      */
     @Mode(TestMode.LITE)
     @Test
+    @AllowedFFDC({ "org.apache.http.conn.HttpHostConnectException" })    //issue# 19832 
     @ExpectedFFDC("com.ibm.ws.security.registry.EntryNotFoundException")
     public void OidcClientTestUserIdNotInRegistry() throws Exception {
 
@@ -1192,7 +1193,8 @@ public class GenericOidcClientTests extends CommonTest {
      * </OL>
      */
     // different versions of java issue different exceptions - allow appropriate exceptions from any of our supported java versions
-    @AllowedFFDC({ "java.security.cert.CertPathBuilderException", "com.ibm.security.cert.IBMCertPathBuilderException", "javax.net.ssl.SSLHandshakeException", "java.security.cert.CertificateException", "sun.security.validator.ValidatorException", "java.net.SocketException", "javax.net.ssl.SSLException", "javax.net.ssl.SSLProtocolException", "com.ibm.wsspi.channelfw.exception.InvalidChainNameException" })
+    // issue# 19832 added "org.apache.http.conn.HttpHostConnectException"
+    @AllowedFFDC({ "java.security.cert.CertPathBuilderException", "com.ibm.security.cert.IBMCertPathBuilderException", "javax.net.ssl.SSLHandshakeException", "java.security.cert.CertificateException", "sun.security.validator.ValidatorException", "java.net.SocketException", "javax.net.ssl.SSLException", "javax.net.ssl.SSLProtocolException", "com.ibm.wsspi.channelfw.exception.InvalidChainNameException", "org.apache.http.conn.HttpHostConnectException" })
     @Test
     public void OidcClientSSLTest_BadOPTrustStore() throws Exception {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 IBM Corporation and others.
+ * Copyright (c) 2018, 2021, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,8 @@ import componenttest.custom.junit.runner.Mode.TestMode;
  **/
 
 @Mode(TestMode.FULL)
-@AllowedFFDC({ "org.apache.http.NoHttpResponseException", "java.security.cert.CertPathBuilderException", "sun.security.validator.ValidatorException", "javax.net.ssl.SSLHandshakeException", "com.ibm.websphere.ssl.SSLException", "java.lang.Exception" })
+//issue #19832 to add "org.apache.http.conn.HttpHostConnectException", since the new method requring proxy FFDC, which causes 2 existing methods ('NoRPTrust...' and 'BadRPTrust...') with the same ffdc
+@AllowedFFDC({ "org.apache.http.NoHttpResponseException", "java.security.cert.CertPathBuilderException", "sun.security.validator.ValidatorException", "javax.net.ssl.SSLHandshakeException", "com.ibm.websphere.ssl.SSLException", "java.lang.Exception", "org.apache.http.conn.HttpHostConnectException" })
 @RunWith(FATRunner.class)
 public class OidcClientDiscoveryErrorTests extends CommonTest {
     public static Class<?> thisClass = GenericOidcClientTests.class;
@@ -460,4 +461,50 @@ public class OidcClientDiscoveryErrorTests extends CommonTest {
         genericRP(_testName, wc, updatedTestSettings, test_GOOD_LOGIN_ACTIONS, expectations);
 
     }
+
+    /**  issue# 19832
+     * This tests the configuration attribute useSystemPropertiesForHttpClientConnections.
+     * A proxy host and port are defined in usr/(server)/jvm.options, but won't take effect until this attribute is set to true.
+     * When the attribute is set to true, we expect a failure because the token retrieval call should
+     * be redirected to the non-existent proxy server.
+     *
+     * Testing the full path would require a proxy server, which the FAT framework does not have, but it has been done manually.
+     *
+     * Note that the proxy properties DO NOT TAKE EFFECT FOR LOCALHOST, so if you are debugging, you cannot configure the OP
+     * to be "localhost" and expect it to work.
+     *
+     */
+
+     /**
+     * Test Purpose:
+     * With discovery configured at the RP, attempting to access a test servlet specifying invalid OP url with wrong proxy host/port
+     * results in 401 error with messages logged.
+     * 
+     * Expected Results:
+     * The discovery should be attempted and should fail with 401 when the RP tries processing the first authentication request
+     * and the following messages should be logged:
+     * CWWKS1525E: A successful response was not returned from the URL <discovery endpoint>.  This is the [0] response status and the [IOException: Connect to 5.6.7.8:8920 [/5.6.7.8] failed: Connection timed out: connect java.net.ConnectException: Connection timed out: connect] error from the discovery request.
+     * CWWKS1524E: The OpenID Connect client [jvmProps] failed to obtain Open ID Connect Provider endpoint information through the discovery endpoint URL 
+     * ...
+     * CWWKS1534E: The OpenID Connect client [client01] requires an authorization endpoint URL, but it is not set.
+     */
+
+     @Mode(TestMode.LITE)
+     @Test
+     public void OidcClientDiscoveryTestWithJvmProps() throws Exception {
+
+        TestSettings updatedTestSettings = testSettings.copyTestSettings();
+        updatedTestSettings.setScope("openid profile");
+        updatedTestSettings.setTestURL(updatedTestSettings.getTestURL().replace(Constants.DEFAULT_SERVLET, "simple/jvmProps"));
+
+        List<validationData> expectations = vData.addSuccessStatusCodes(null, Constants.GET_LOGIN_PAGE);
+        expectations = vData.addResponseStatusExpectation(expectations, Constants.GET_LOGIN_PAGE, Constants.UNAUTHORIZED_STATUS); 
+
+        testRPServer.addIgnoredServerException("CWWKS1534E");
+
+        WebConversation wc = new WebConversation();
+        genericRP(_testName, wc, updatedTestSettings, test_LOGIN_PAGE_ONLY, expectations);
+
+     } 	        
+
 }
