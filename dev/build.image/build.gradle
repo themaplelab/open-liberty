@@ -76,21 +76,35 @@ task copyLicenseToBuildImage (type:Copy) {
            tokens: [BUILD_ID: bnd.buildID, LIBERTY_VERSION: bnd.libertyRelease])
 }
 
+
 task copySwidTagToBuildImage (type:Copy) {
     dependsOn jar
     from project.file('publish')
     into project.file('wlp/lib/versions/tags')
-    include 'ibm.com_Open_Liberty*.swidtag'
+    include 'ibm.com_Open_Liberty-22.*.swidtag'
     filter(ReplaceTokens,
-           tokens: [ VERSION: bnd.libertyRelease ])
+           tokens: [VERSION: bnd.libertyRelease ])
 }
 
-assemble {
+task copySwidFixpackTagToBuildImage (type:Copy) {
+    dependsOn jar
+    from project.file('publish')
+    into project.file('wlp/lib/versions/tags')
+    include 'ibm.com_Open_Liberty-release.swidtag'
+    rename { filename ->
+        filename.replace("release", bnd.libertyRelease)
+    }
+    filter(ReplaceTokens,
+           tokens: [PRODUCT_VERSION: bnd.libertyRelease, PRODUCT_EDITION: bnd.productEdition])
+}
+
+assemble { 
     dependsOn copyPropertiesToBuildImage
     dependsOn addServiceFingerprint
     dependsOn copyReadmeToBuildImage
     dependsOn copyLicenseToBuildImage
     dependsOn copySwidTagToBuildImage
+    dependsOn copySwidFixpackTagToBuildImage
 }
 
 File packageDir = new File(project.buildDir, 'openliberty')
@@ -855,4 +869,4 @@ if (isAutomatedBuild && !isIFIXBuild) {
         }
         publish.dependsOn buildOsNativePackages
     }
-}
+} 
