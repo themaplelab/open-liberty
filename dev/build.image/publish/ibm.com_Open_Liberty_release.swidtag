@@ -4,5 +4,5 @@
     <Meta generator="4-1-20210113"/>
     <Meta revision="@PRODUCT_VERSION@"/>
     <Link href="swid:ibm.com-0ca5af184810448c851299b2c615ebb6-22.0.0" rel="ancestor"/>
-    <Entity name="IBM" regid="ibm.com" role="licensor tagCreator softwareCreatorXX"/>
+    <Entity name="IBM" regid="ibm.com" role="licensor tagCreator softwareCreator"/>
 </SoftwareIdentity>
