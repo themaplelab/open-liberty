@@ -108,11 +108,9 @@ public class WorkQueueManager implements UDPSelectorMonitor {
         this.selector = Selector.open();
         // TODO use doPriv checks for Java2 security (like TCP)
         this.selectorTask = new SelectorTask();
-        this.selectorThread = new Thread(selectorTask);
+        this.selectorThread = Thread.startVirtualThread(selectorTask);
         this.selectorThread.setName("UDP WorkQueueManager Thread:" + numWorkerThreads.incrementAndGet());
-        this.selectorThread.setDaemon(true);
-        this.selectorThread.start();
-        this.selectorThreadId = selectorThread.getId();
+        this.selectorThreadId = selectorThread.threadId();
 
         String value = (String) udpFactory.getProperties().get("numReceivesBeforeNewWorker");
         if (value != null && 0 < value.length()) {
