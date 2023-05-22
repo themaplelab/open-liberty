@@ -44,6 +44,7 @@
     <property name="dojo.project.release.profile" value="${basedir}/lib/releaseProfile.js" />
     <property name="dojo.project.release.output" location="${basedir}/lib/dojo-release" />
     <property name="dojo.project.build.output" location="${basedir}/build/dojo" />
+    <property name="dojo.build.engine.force.rhino" value="true" />
 
     <!-- Figure out which build engine to use.  Preferably nodejs, otherwise rhino -->
     <target name="dojo-release-execute">
