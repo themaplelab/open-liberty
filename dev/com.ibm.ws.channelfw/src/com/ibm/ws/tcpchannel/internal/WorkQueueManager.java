@@ -1104,13 +1104,8 @@ public class WorkQueueManager implements ChannelTermination, FFDCSelfIntrospecta
                 threadName = "Connect Selector";
             }
 
-            Thread t = new Thread(this.group, this.sr);
+            Thread t = Thread.startVirtualThread(this.sr);
             t.setName(threadName + "." + this.number);
-
-            // all TCPChannel Thread should be daemon threads
-            t.setDaemon(true);
-
-            t.start();
             return null;
         }
     }
