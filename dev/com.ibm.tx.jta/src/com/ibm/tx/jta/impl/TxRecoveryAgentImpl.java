@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ThreadFactory;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -435,7 +436,10 @@ public class TxRecoveryAgentImpl implements RecoveryAgent {
                 final Thread t = AccessController.doPrivileged(new PrivilegedAction<Thread>() {
                     @Override
                     public Thread run() {
-                        return new Thread(_recoveryManager, "Recovery Thread");
+                        ThreadFactory factory = Thread.ofVirtual().factory();
+                        Thread thread = factory.newThread(_recoveryManager);
+                        thread.setName("Recovery Thread");
+                        return thread;
                     }
                 });
 
