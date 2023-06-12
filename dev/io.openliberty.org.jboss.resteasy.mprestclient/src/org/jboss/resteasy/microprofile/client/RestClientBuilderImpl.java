@@ -81,6 +81,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -312,7 +313,8 @@ public class RestClientBuilderImpl implements RestClientBuilder {
         if (this.executorService != null) {
             resteasyClientBuilder.executorService(this.executorService);
         } else {
-            this.executorService = Executors.newCachedThreadPool();
+            ThreadFactory threadFactory =Thread.ofVirtual().factory();
+            this.executorService = Executors.newCachedThreadPool(threadFactory);
             resteasyClientBuilder.executorService(executorService, true);
         }
         resteasyClientBuilder.register(DEFAULT_MEDIA_TYPE_FILTER);
