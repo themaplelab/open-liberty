@@ -603,7 +603,7 @@ public class WorkQueueManager implements UDPSelectorMonitor {
                                         if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
                                             Tr.debug(WorkQueueManager.this, tc, "Starting worker thread from WQM: " + attachment.getNumThreadsProcessing());
                                         }
-                                        MultiThreadedWorker worker = getMultiThreadedWorker(key, Thread.currentThread().getId());
+                                        MultiThreadedWorker worker = getMultiThreadedWorker(key, Thread.currentThread().threadId());
                                         dispatchWorker(worker);
                                     } else {
                                         //
