@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 
 public class ProgressBar {
     private static ProgressBar progressBar;
