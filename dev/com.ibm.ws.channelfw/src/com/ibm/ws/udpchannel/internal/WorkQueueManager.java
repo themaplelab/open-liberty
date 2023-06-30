@@ -215,7 +215,7 @@ public class WorkQueueManager implements UDPSelectorMonitor {
         synchronized (channelRequestingToBeAddedRemovedSync) {
             channelRequestingToBeAddedRemoved = true;
         }
-        if (Thread.currentThread().getId() != selectorThreadId) {
+        if (Thread.currentThread().threadId() != selectorThreadId) {
             selector.wakeup();
             if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
                 Tr.debug(this, tc, "selector.wakeup() for selector " + selector.hashCode());
