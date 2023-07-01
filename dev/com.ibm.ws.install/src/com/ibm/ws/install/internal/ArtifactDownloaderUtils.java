@@ -33,10 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -70,7 +67,8 @@ public class ArtifactDownloaderUtils {
         logger.fine("number of missing features: " + featureURLs.size());
 
         int numThreads = getNumThreads();
-        final ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        ThreadFactory factory = Thread.ofVirtual().factory();
+        final ExecutorService executor = Executors.newFixedThreadPool(numThreads, factory);
         final List<Future<?>> futures = new ArrayList<>();
 
         for (String url : featureURLs) {
