@@ -17,6 +17,7 @@
 package com.ibm.jbatch.container.services.impl;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +40,8 @@ public class GrowableThreadPoolServiceImpl extends AbstractThreadPoolServiceImpl
 	public void init(IBatchConfig pgcConfig) throws BatchContainerServiceException {
 		String method = "init";
 		if(logger.isLoggable(Level.FINER)) { logger.entering(sourceClass, method);	}
-		
-		executorService = Executors.newCachedThreadPool();
+		ThreadFactory threadFactory =Thread.ofVirtual().factory();
+		executorService = Executors.newCachedThreadPool(threadFactory);
 		
 		if(logger.isLoggable(Level.FINER)) { logger.exiting(sourceClass, method);	}
 
