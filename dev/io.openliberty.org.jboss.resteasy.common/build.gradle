@@ -42,3 +42,14 @@ task extractInjectedClasses(type: Copy) {
 
 compileJava.dependsOn extractInjectedClasses
 
+tasks.withType(JavaCompile) {
+  options.release = 19
+  options.compilerArgs.add('--enable-preview')
+}
+
+test {
+  dependsOn ':cnf:copyMavenLibs'
+  doFirst {
+    jvmArgs = ['--enable-preview']
+  }
+}
