@@ -1083,7 +1083,7 @@ public class ThreadPool {
             @Override
             public Object run() {
                 // return new Thread(commandToRun); // d185137.2
-                Thread temp = new Thread(commandToRun, runId); // d185137.2
+                Thread temp = Thread.ofVirtual().name(runId).unstarted(commandToRun); // d185137.2
                 temp.setDaemon(true);
                 return temp;
             }
