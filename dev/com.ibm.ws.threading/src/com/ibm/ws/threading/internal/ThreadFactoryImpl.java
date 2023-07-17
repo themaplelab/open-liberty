@@ -119,7 +119,7 @@ final class ThreadFactoryImpl implements ThreadFactory {
     static class LibertyThread extends Thread {
 
         LibertyThread(ThreadGroup tg, Runnable r, String name) {
-            super(tg, r, name);
+            Thread.ofVirtual().name(name).unstarted(r);
         }
 
         @Override
