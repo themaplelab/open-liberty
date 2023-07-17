@@ -40,11 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -79,7 +75,8 @@ public class ArtifactDownloader implements AutoCloseable {
     ArtifactDownloader() {
         this.downloadedFiles = Collections.synchronizedList(new ArrayList<>());
         this.progressBar = ProgressBar.getInstance();
-        this.executor = Executors.newFixedThreadPool(ArtifactDownloaderUtils.getNumThreads());
+        ThreadFactory factory = Thread.ofVirtual().factory();
+        this.executor = Executors.newFixedThreadPool(ArtifactDownloaderUtils.getNumThreads(), factory);
         this.mavenCoordMap = new Hashtable<>();
     }
 

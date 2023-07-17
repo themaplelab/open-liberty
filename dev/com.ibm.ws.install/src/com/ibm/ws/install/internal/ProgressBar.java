@@ -12,11 +12,10 @@
  *******************************************************************************/
 package com.ibm.ws.install.internal;
 
-import java.util.HashMap;
-
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import java.util.HashMap;
 
 public class ProgressBar {
     private static ProgressBar progressBar;
