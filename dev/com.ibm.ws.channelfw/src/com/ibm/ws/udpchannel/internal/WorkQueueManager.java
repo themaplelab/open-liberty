@@ -217,7 +217,7 @@ public class WorkQueueManager implements UDPSelectorMonitor {
         synchronized (channelRequestingToBeAddedRemovedSync) {
             channelRequestingToBeAddedRemoved = true;
         }
-        if (Thread.currentThread().getId() != selectorThreadId) {
+        if (Thread.currentThread().threadId() != selectorThreadId) {
             selector.wakeup();
             if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
                 Tr.debug(this, tc, "selector.wakeup() for selector " + selector.hashCode());
@@ -605,7 +605,7 @@ public class WorkQueueManager implements UDPSelectorMonitor {
                                         if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled()) {
                                             Tr.debug(WorkQueueManager.this, tc, "Starting worker thread from WQM: " + attachment.getNumThreadsProcessing());
                                         }
-                                        MultiThreadedWorker worker = getMultiThreadedWorker(key, Thread.currentThread().getId());
+                                        MultiThreadedWorker worker = getMultiThreadedWorker(key, Thread.currentThread().threadId());
                                         dispatchWorker(worker);
                                     } else {
                                         //
