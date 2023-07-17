@@ -17,9 +17,9 @@ configurations {
 
 dependencies {
   resteasy 'org.jboss.resteasy:resteasy-client:4.7.2.Final',
-           'org.jboss.resteasy:resteasy-client-api:4.7.2.Final',
-           'org.jboss.resteasy:resteasy-core:4.7.9.Final',
-           'org.jboss.resteasy:resteasy-core-spi:4.7.2.Final'
+          'org.jboss.resteasy:resteasy-client-api:4.7.2.Final',
+          'org.jboss.resteasy:resteasy-core:4.7.9.Final',
+          'org.jboss.resteasy:resteasy-core-spi:4.7.2.Final'
 }
 
 task extractInjectedClasses(type: Copy) {
@@ -42,3 +42,14 @@ task extractInjectedClasses(type: Copy) {
 
 compileJava.dependsOn extractInjectedClasses
 
+tasks.withType(JavaCompile) {
+  options.release = 19
+  options.compilerArgs.add('--enable-preview')
+}
+
+test {
+  dependsOn ':cnf:copyMavenLibs'
+  doFirst {
+    jvmArgs = ['--enable-preview']
+  }
+}

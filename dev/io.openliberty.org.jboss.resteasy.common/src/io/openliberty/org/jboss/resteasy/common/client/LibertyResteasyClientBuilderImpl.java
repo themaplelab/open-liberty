@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -85,7 +86,8 @@ public class LibertyResteasyClientBuilderImpl extends ResteasyClientBuilderImpl 
         if (executor == null)
         {
            cleanupExecutor = true;
-           executor = Executors.newCachedThreadPool();
+            ThreadFactory threadFactory =Thread.ofVirtual().factory();
+            executor = Executors.newCachedThreadPool(threadFactory);
         }
         
         executor = new AsyncClientExecutorService(executor);
