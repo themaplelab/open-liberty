@@ -473,7 +473,7 @@ public class SecureAction {
     }
 
     Thread createThread0(Runnable target, String name, ClassLoader contextLoader) {
-        Thread result = new Thread(target, name);
+        Thread result  = Thread.ofVirtual().name(name).unstarted(target);
         if (contextLoader != null)
             result.setContextClassLoader(contextLoader);
         return result;

@@ -46,7 +46,7 @@ public class IncidentImpl implements Incident {
             } else {
                 exceptionName = th.getClass().getName();
             }
-            this.threadId = Thread.currentThread().getId();
+            this.threadId = Thread.currentThread().threadId();
         }
 
         @Override

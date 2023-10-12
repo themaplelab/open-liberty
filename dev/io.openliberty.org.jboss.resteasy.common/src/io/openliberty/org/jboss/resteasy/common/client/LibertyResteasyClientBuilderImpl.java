@@ -33,6 +33,7 @@ import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 import io.openliberty.restfulWS.client.AsyncClientExecutorService;
 import io.openliberty.restfulWS.client.ClientBuilderListener;
+import java.util.concurrent.ThreadFactory;
 
 @SuppressWarnings("unchecked")
 public class LibertyResteasyClientBuilderImpl extends ResteasyClientBuilderImpl {
@@ -52,6 +53,8 @@ public class LibertyResteasyClientBuilderImpl extends ResteasyClientBuilderImpl 
 
     @Override
     public ResteasyClient build() {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         // using facade to avoid trying OSGi services unless OSGi is available 
         Optional<Integer> key = OsgiFacade.instance().map(facade ->
             facade.invoke(ClientBuilderListener.class, cbl -> cbl.building(this)));
@@ -85,7 +88,7 @@ public class LibertyResteasyClientBuilderImpl extends ResteasyClientBuilderImpl 
         if (executor == null)
         {
            cleanupExecutor = true;
-           executor = Executors.newCachedThreadPool();
+           executor = Executors.newCachedThreadPool(threadFactory);
         }
         
         executor = new AsyncClientExecutorService(executor);
@@ -104,10 +107,11 @@ public class LibertyResteasyClientBuilderImpl extends ResteasyClientBuilderImpl 
 
         key.ifPresent(tupleKey -> OsgiFacade.instance().ifPresent(facade -> 
             facade.invoke(tupleKey, ClientBuilderListener.class, cbl -> cbl.built(client))));
-        return client;
-    }
+        return client;}
+    
 
-    @Override
+    
+@Override
     protected ResteasyClient createResteasyClient(ClientHttpEngine engine, ExecutorService executor, boolean cleanupExecutor,
                                                   ScheduledExecutorService scheduledExecutorService, ClientConfiguration config) {
         return createResteasyClient(engine, executor, cleanupExecutor, scheduledExecutorService, config, Collections.emptyList());

@@ -72,7 +72,7 @@ public class ResolutionReportHelper implements ResolverHookFactory, ResolverHook
     public ResolverHook begin(Collection<BundleRevision> triggers) {
         ResolverHook hook = null;
         // Only return hook if resolve is on behalf of the thread that started this handler;
-        if (_resolvingThread == Thread.currentThread().getId()) {
+        if (_resolvingThread == Thread.currentThread().threadId()) {
             hook = this;
         }
         return hook;
@@ -107,7 +107,7 @@ public class ResolutionReportHelper implements ResolverHookFactory, ResolverHook
      * @param bContext bundleContext
      */
     public void startHelper(BundleContext bContext) {
-        _resolvingThread = Thread.currentThread().getId();
+        _resolvingThread = Thread.currentThread().threadId();
         ResolverHookFactoryReg = bContext.registerService(ResolverHookFactory.class, this, null);
     }
 

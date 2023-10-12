@@ -184,7 +184,7 @@ public class PrepareJspHelper implements Runnable {
             int i;
             for (i = 0; i < _threads; i++) {
                 PrepareJspHelperThread helper = new PrepareJspHelperThread(this, docRoot, container);
-                threads[i] = new Thread(helper, "PrepareJspHelperThread " + i);
+                threads[i] = Thread.ofVirtual().unstarted(helper);
                 threads[i].setDaemon(true);
                 threads[i].start();
             }

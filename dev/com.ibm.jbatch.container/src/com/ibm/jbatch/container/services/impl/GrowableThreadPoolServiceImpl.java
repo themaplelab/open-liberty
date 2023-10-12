@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 
 import com.ibm.jbatch.container.exception.BatchContainerServiceException;
 import com.ibm.jbatch.spi.services.IBatchConfig;
+import java.util.concurrent.ThreadFactory;
 
 @Component(configurationPolicy=ConfigurationPolicy.REQUIRE)
 public class GrowableThreadPoolServiceImpl extends AbstractThreadPoolServiceImpl {
@@ -37,14 +38,14 @@ public class GrowableThreadPoolServiceImpl extends AbstractThreadPoolServiceImpl
 	}
 	
 	public void init(IBatchConfig pgcConfig) throws BatchContainerServiceException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
 		String method = "init";
 		if(logger.isLoggable(Level.FINER)) { logger.entering(sourceClass, method);	}
 		
-		executorService = Executors.newCachedThreadPool();
+		executorService = Executors.newCachedThreadPool(threadFactory);
 		
-		if(logger.isLoggable(Level.FINER)) { logger.exiting(sourceClass, method);	}
+		if(logger.isLoggable(Level.FINER)) { logger.exiting(sourceClass, method);	}}
 
-	}
-
-
+	
 }

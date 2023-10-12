@@ -1362,7 +1362,7 @@ public class WsocConnLink {
                 if (httpSession != null) {
                     ip.startSesContext(httpSession);
                     if (tc.isDebugEnabled()) {
-                        Tr.debug(tc, "thread ID: " + Thread.currentThread().getId() + "Session ID: " + httpSession.getId());
+                        Tr.debug(tc, "thread ID: " + Thread.currentThread().threadId() + "Session ID: " + httpSession.getId());
                     }
                 } else if (tc.isDebugEnabled()) {
                     Tr.debug(tc, "Attempted to use sessions scope when there was no valid HttpSession, guess the HttpSession expired?");

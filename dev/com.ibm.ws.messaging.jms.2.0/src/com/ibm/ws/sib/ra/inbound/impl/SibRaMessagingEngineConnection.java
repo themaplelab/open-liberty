@@ -1175,7 +1175,7 @@ final class SibRaMessagingEngineConnection {
 
                         SibRaConnectionEventThread newThread = new SibRaConnectionEventThread();
                         threadInstance = newThread;
-                        Thread th = new Thread(newThread);
+                        Thread th  = Thread.ofVirtual().unstarted(newThread);
                         th.start();
 
                     } catch (Throwable e) {
