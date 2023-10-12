@@ -76,7 +76,7 @@ public class UniqueKeyManager
         _rangeManager.start();
 
         // Start up async part of range manager
-        _rangeManagerThread = new Thread(_rangeManager);
+        _rangeManagerThread = Thread.ofVirtual().unstarted(_rangeManager);
         _rangeManagerThread.setName("UniqueKeyRangeManager");
         _rangeManagerThread.setDaemon(true);
         _rangeManagerThread.start();

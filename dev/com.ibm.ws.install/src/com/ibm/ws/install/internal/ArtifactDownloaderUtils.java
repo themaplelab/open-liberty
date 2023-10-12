@@ -43,6 +43,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import com.ibm.ws.install.InstallConstants.VerifyOption;
 import com.ibm.ws.install.InstallException;
+import java.util.concurrent.ThreadFactory;
 
 public class ArtifactDownloaderUtils {
 
@@ -66,11 +67,13 @@ public class ArtifactDownloaderUtils {
     }
 
     public static List<String> getMissingFiles(Set<String> featureURLs, Map<String, Object> envMap) throws IOException, InterruptedException, ExecutionException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         List<String> result = new Vector<String>();
         logger.fine("number of missing features: " + featureURLs.size());
 
         int numThreads = getNumThreads();
-        final ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        final ExecutorService executor = Executors.newFixedThreadPool(numThreads,threadFactory);
         final List<Future<?>> futures = new ArrayList<>();
 
         for (String url : featureURLs) {
@@ -100,10 +103,11 @@ public class ArtifactDownloaderUtils {
             Thread.sleep(THREAD_SLEEP);
         }
         executor.shutdown();
-        return result;
-    }
+        return result;}
+    
 
-    public static boolean fileIsMissing(String url, Map<String, Object> envMap) throws IOException {
+    
+public static boolean fileIsMissing(String url, Map<String, Object> envMap) throws IOException {
         return !(exists(url, envMap) == HttpURLConnection.HTTP_OK);
     }
 

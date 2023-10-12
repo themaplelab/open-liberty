@@ -411,7 +411,7 @@ public class MessageEndpointBase extends EJSWrapperBase implements MessageEndpoi
         {
             ivDiscardRequired = true;
             // Create an exception to nest in the ISE which will contain stack trace of the conflicting thread
-            final Throwable t = new Exception("Conflicting with thread " + ivThread.getId() + ": " + ivThread.getName());
+            final Throwable t = new Exception("Conflicting with thread " + ivThread.threadId() + ": " + ivThread.getName());
 
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
                 @Override

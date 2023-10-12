@@ -38,6 +38,7 @@ import com.ibm.ws.microprofile.faulttolerance.spi.FaultToleranceProvider;
 import com.ibm.ws.microprofile.faulttolerance.spi.RetryPolicy;
 import com.ibm.ws.microprofile.faulttolerance.test.util.AsyncTestFunction;
 import com.ibm.ws.microprofile.faulttolerance.test.util.TestTask;
+import java.util.concurrent.ThreadFactory;
 
 /**
  *
@@ -46,6 +47,8 @@ public class BulkheadTest extends AbstractFTTest {
 
     @Test
     public void testBulkhead() throws InterruptedException, ExecutionException, TimeoutException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         BulkheadPolicy bulkhead = FaultToleranceProvider.newBulkheadPolicy();
         bulkhead.setMaxThreads(2);
 
@@ -53,7 +56,7 @@ public class BulkheadTest extends AbstractFTTest {
         builder.setBulkheadPolicy(bulkhead);
         Executor<String> executor = builder.build();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(10,threadFactory);
 
         CountDownLatch executionLatch = new CountDownLatch(1);
         CountDownLatch completionLatch = new CountDownLatch(2);
@@ -96,11 +99,14 @@ public class BulkheadTest extends AbstractFTTest {
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
             assertTrue(cause + " was not a BulkheadException", cause instanceof BulkheadException);
-        }
-    }
+        }}
+    
 
-    @Test
+    
+@Test
     public void testBulkheadRetrySmall() throws InterruptedException, ExecutionException, TimeoutException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         BulkheadPolicy bulkhead = FaultToleranceProvider.newBulkheadPolicy();
         bulkhead.setMaxThreads(2);
 
@@ -113,7 +119,7 @@ public class BulkheadTest extends AbstractFTTest {
         builder.setRetryPolicy(retryPolicy);
         Executor<String> executor = builder.build();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(10,threadFactory);
 
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(2);
@@ -150,11 +156,14 @@ public class BulkheadTest extends AbstractFTTest {
         assertEquals("testBulkheadRetrySmall3", executions3);
         String executions4 = task4.get(100, TimeUnit.MILLISECONDS);
         System.out.println(timeDiff(start) + " - task4 got");
-        assertEquals("testBulkheadRetrySmall4", executions4);
-    }
+        assertEquals("testBulkheadRetrySmall4", executions4);}
+    
 
-    @Test
+    
+@Test
     public void testBulkheadRetryOverload() throws InterruptedException, ExecutionException, TimeoutException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         BulkheadPolicy bulkhead = FaultToleranceProvider.newBulkheadPolicy();
         bulkhead.setMaxThreads(5);
 
@@ -171,7 +180,7 @@ public class BulkheadTest extends AbstractFTTest {
         Executor<String> executor = builder.build();
 
         int numberOfTasks = 20;
-        ExecutorService executorService = Executors.newFixedThreadPool(numberOfTasks * 2); //this is just the test driver pool
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfTasks * 2,threadFactory); //this is just the test driver pool
 
         CountDownLatch latch2 = new CountDownLatch(numberOfTasks);
 
@@ -193,10 +202,11 @@ public class BulkheadTest extends AbstractFTTest {
             String executions = task[i].get(100, TimeUnit.MILLISECONDS);
             System.out.println(timeDiff(start) + " - task" + i + " got");
             assertEquals("testBulkheadRetryOverload" + i, executions);
-        }
-    }
+        }}
+    
 
-    private static String timeDiff(long relativePoint) {
+    
+private static String timeDiff(long relativePoint) {
         long now = System.nanoTime();
         long diff = now - relativePoint;
         double seconds = ((double) diff / (double) 1000000000);

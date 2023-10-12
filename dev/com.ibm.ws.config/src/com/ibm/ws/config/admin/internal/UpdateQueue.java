@@ -89,7 +89,7 @@ class UpdateQueue<T> {
                 return AccessController.doPrivileged(new PrivilegedAction<Thread>() {
                     @Override
                     public Thread run() {
-                        Thread t = new Thread(r);
+                        Thread t  = Thread.ofVirtual().unstarted(r);
                         t.setDaemon(true);
                         t.setName("Config-" + t.getName());
                         return t;

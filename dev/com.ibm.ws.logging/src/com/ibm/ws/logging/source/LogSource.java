@@ -133,7 +133,7 @@ public class LogSource implements Source {
 
         logData.setMessageId(null); // needs to be null to satisfy HandlerTest.java testMessageSource()
 
-        int threadIdVal = (int) Thread.currentThread().getId();
+        int threadIdVal = (int) Thread.currentThread().threadId();
         logData.setThreadId(threadIdVal);
         logData.setModule(logRecord.getLoggerName());
         logData.setSeverity(LogFormatUtils.mapLevelToType(logRecord));
