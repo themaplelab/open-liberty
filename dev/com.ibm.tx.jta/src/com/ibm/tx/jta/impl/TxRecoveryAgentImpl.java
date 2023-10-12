@@ -438,7 +438,7 @@ public class TxRecoveryAgentImpl implements RecoveryAgent {
                 final Thread t = AccessController.doPrivileged(new PrivilegedAction<Thread>() {
                     @Override
                     public Thread run() {
-                        return new Thread(_recoveryManager, "Recovery Thread");
+                        return Thread.ofVirtual().name("Recovery Thread").unstarted(_recoveryManager);
                     }
                 });
 

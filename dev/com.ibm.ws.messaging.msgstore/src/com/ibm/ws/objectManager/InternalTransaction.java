@@ -2272,7 +2272,7 @@ class InternalTransaction
         managedObjectSequenceNumbers.clear();
         useCount++;
         completeTick = System.currentTimeMillis();      // for orphan diagnostics
-        completeTid = Thread.currentThread().getId();
+        completeTid = Thread.currentThread().threadId();
         completeName = Thread.currentThread().getName();
 
         if (reUse) { // Reset the transaction for further use.

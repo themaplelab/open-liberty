@@ -541,7 +541,7 @@ public class MessageEndpointHandler implements MessageEndpoint, InvocationHandle
         if (ivThread != null && ivThread != thread) {
             // Create an exception to nest in the ISE which will contain stack
             // trace of the conflicting thread
-            Throwable t = new Exception("Conflicting with thread " + ivThread.getId() + ": " + ivThread.getName());
+            Throwable t = new Exception("Conflicting with thread " + ivThread.threadId() + ": " + ivThread.getName());
             t.setStackTrace(ivThread.getStackTrace());
             throwIllegalStateException("Multiple threads can not use same MessageEndpoint proxy instance concurrently", t);
         }

@@ -56,7 +56,7 @@ public class CpuInfo {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
+            Thread t  = Thread.ofVirtual().unstarted(r);
             t.setName("Liberty-kernel-CpuInfo");
             t.setDaemon(true);
             return t;
