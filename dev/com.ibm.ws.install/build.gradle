@@ -45,5 +45,13 @@ jar.dependsOn(massiveCopyTask)
 
 test {
     dependsOn jar
+    dependsOn ':cnf:copyMavenLibs'
+    doFirst {
+        jvmArgs = ['--enable-preview']
+    }
     jvmArgs = ["--add-opens", "java.base/java.lang=ALL-UNNAMED"]
+}
+tasks.withType(JavaCompile) {
+    options.release = 19
+    options.compilerArgs.add('--enable-preview')
 }
