@@ -44,4 +44,13 @@ task massiveCopyTask {
 test {
     dependsOn massiveCopyTask
     dependsOn jar
+    dependsOn ':cnf:copyMavenLibs'
+    doFirst {
+        jvmArgs = ['--enable-preview']
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.release = 19
+    options.compilerArgs.add('--enable-preview')
 }
