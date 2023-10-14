@@ -11,6 +11,11 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
+tasks.withType(JavaCompile) {
+    options.release = 19
+    options.compilerArgs.add('--enable-preview')
+}
+
 compileJava {
     inputs.files { rasInstrumentationInputFiles() }
     doLast {
@@ -32,5 +37,9 @@ compileJava {
 }
 
 test {
+    dependsOn ':cnf:copyMavenLibs'
+    doFirst {
+        jvmArgs = ['--enable-preview']
+    }
    jvmArgs = ["--add-opens", "java.base/java.io=ALL-UNNAMED"]
 }
