@@ -123,7 +123,7 @@ public class EmbeddableTranManagerImpl extends TranManagerImpl {
                 final IllegalStateException ise;
                 Thread thread = t.getThread(); // avoid race condition where value becomes null after first check
                 if (thread != null) {
-                    ise = new IllegalStateException("Transaction already active on thread " + String.format("%08X", thread.getId()));
+                    ise = new IllegalStateException("Transaction already active on thread " + String.format("%08X", thread.threadId()));
                 } else {
                     ise = new IllegalStateException("Transaction cannot be resumed on this thread");
                 }

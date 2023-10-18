@@ -972,7 +972,7 @@ abstract class ContainerClassLoader extends LibertyLoader implements Keyed<Class
     protected final static ExecutorService mapCreationQueue = Executors.newSingleThreadExecutor(new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
+            Thread t  = Thread.ofVirtual().unstarted(r);
             t.setDaemon(true);
             t.setName("ClassloaderMapProcessing" + t.getName());
             return t;
