@@ -53,6 +53,7 @@ import com.ibm.websphere.crypto.PasswordUtil;
 import com.ibm.ws.install.InstallConstants.VerifyOption;
 import com.ibm.ws.install.InstallException;
 import com.ibm.ws.install.internal.InstallLogUtils.Messages;
+import java.util.concurrent.ThreadFactory;
 
 public class ArtifactDownloader implements AutoCloseable {
 
@@ -77,13 +78,16 @@ public class ArtifactDownloader implements AutoCloseable {
     private Map<String, File> mavenCoordMap = null;
 
     ArtifactDownloader() {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
         this.downloadedFiles = Collections.synchronizedList(new ArrayList<>());
         this.progressBar = ProgressBar.getInstance();
-        this.executor = Executors.newFixedThreadPool(ArtifactDownloaderUtils.getNumThreads());
-        this.mavenCoordMap = new Hashtable<>();
-    }
+        this.executor = Executors.newThreadPerTaskExecutor(threadFactory);
+        this.mavenCoordMap = new Hashtable<>();}
+    
 
-    private Future<String> submitDownloadRequest(String coords, String fileType, String dLocation, MavenRepository repository) {
+    
+private Future<String> submitDownloadRequest(String coords, String fileType, String dLocation, MavenRepository repository) {
         return executor.submit(() -> {
             synthesizeAndDownload(coords, fileType, dLocation, repository, false);
             return coords + "." + fileType;

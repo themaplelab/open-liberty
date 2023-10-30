@@ -423,7 +423,7 @@ public class HpelHelper {
      * @return thread id or -1 if LogRecord.getThreadID() should be used instead
      */
     public static int getIntThreadId() {
-        return useJULThreadId ? -1 : (int) (Thread.currentThread().getId() & 0xFFFFFFFF);
+        return useJULThreadId ? -1 : (int) (Thread.currentThread().threadId() & 0xFFFFFFFF);
     }
 
 //    public static byte[] printHeader(OutputStream output, Properties p) { // D422679.1
