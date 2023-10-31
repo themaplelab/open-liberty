@@ -71,7 +71,7 @@ public class SIPListenningConnectionImpl
 			m_lp.setPort(m_sock.getLocalPort());
 
 			if (!GenericEndpointImpl.useNetty()) {
-    			Thread thread  = Thread.ofVirtual().name("SIP TCP Connections Listener on " + m_lp).unstarted(this);
+    			Thread thread  = Thread.ofVirtual().name("SIP TCP Connections Listener on " + m_lp).unstarted(new ConnectionsListener(this));
     			isRunning = true;
     			thread.start();
 			}
