@@ -5,6 +5,6 @@ test {
     }
 }
 tasks.withType(JavaCompile) {
-    options.release = 19
+    options.release = 21
     options.compilerArgs.add('--enable-preview')
 }
