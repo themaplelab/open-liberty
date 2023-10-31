@@ -19,6 +19,6 @@ test {
     systemProperty "com.ibm.ws.microprofile.faulttolerance.jse", "true"
 }
 tasks.withType(JavaCompile) {
-    options.release = 19
+    options.release = 21
     options.compilerArgs.add('--enable-preview')
 }
