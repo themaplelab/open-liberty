@@ -455,7 +455,7 @@ public class AuditServiceImpl implements AuditService, Source {
                         long dateVal = System.currentTimeMillis();
                         gdo.addPair(LogFieldConstants.IBM_DATETIME, dateVal);
                         gdo.addPair(LogFieldConstants.IBM_SEQUENCE, sequenceNumber.next(dateVal));
-                        gdo.addPair(LogFieldConstants.IBM_THREADID, new Integer((int) Thread.currentThread().getId()));
+                        gdo.addPair(LogFieldConstants.IBM_THREADID, new Integer((int) Thread.currentThread().threadId()));
                         gdo = map2GenericData(gdo, event.getMap());
 
                         final GenericData f_gdo = gdo;

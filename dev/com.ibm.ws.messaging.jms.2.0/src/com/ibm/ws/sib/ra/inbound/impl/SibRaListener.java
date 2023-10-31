@@ -1321,7 +1321,7 @@ abstract class SibRaListener implements StoppableAsynchConsumerCallback {
             // Execute the callback work asynchronously
             try {
 
-                Thread raListenerThread = new Thread(this);
+                Thread raListenerThread  = Thread.ofVirtual().unstarted(this);
                 raListenerThread.setName("SIBRAListenerThread");
                 raListenerThread.start();
             } catch (IllegalStateException ie) {
