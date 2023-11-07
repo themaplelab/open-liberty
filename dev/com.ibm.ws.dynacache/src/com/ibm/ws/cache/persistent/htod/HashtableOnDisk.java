@@ -2796,7 +2796,7 @@ public class HashtableOnDisk {
         //new_htindex = new long[new_table_size];                                        
 
         Rehash rehash = new Rehash(this, new_table, new_table_size);
-        Thread t = new Thread(rehash);
+        Thread t  = Thread.ofVirtual().unstarted(rehash);
         t.start();
     }
 
@@ -3002,7 +3002,7 @@ public class HashtableOnDisk {
                            // invoked in a new thread (see below)
 
         Rehash rehash = new Rehash(this, new_table, new_table_size);
-        Thread t = new Thread(rehash);
+        Thread t  = Thread.ofVirtual().unstarted(rehash);
         t.start();
     }
 

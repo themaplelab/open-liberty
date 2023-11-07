@@ -88,6 +88,7 @@ import java.util.regex.Pattern;
 import static org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder.PROPERTY_PROXY_HOST;
 import static org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder.PROPERTY_PROXY_PORT;
 import static org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder.PROPERTY_PROXY_SCHEME;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * @author Bill Burke (initial commit according to GitHub history)
@@ -232,6 +233,8 @@ public class RestClientBuilderImpl implements RestClientBuilder {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T build(Class<T> aClass) throws IllegalStateException, RestClientDefinitionException {
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
+
 
         RestClientListeners.get().forEach(listener -> listener.onNewClient(aClass, this));
 
@@ -312,7 +315,7 @@ public class RestClientBuilderImpl implements RestClientBuilder {
         if (this.executorService != null) {
             resteasyClientBuilder.executorService(this.executorService);
         } else {
-            this.executorService = Executors.newCachedThreadPool();
+            this.executorService = Executors.newThreadPerTaskExecutor(threadFactory);
             resteasyClientBuilder.executorService(executorService, true);
         }
         resteasyClientBuilder.register(DEFAULT_MEDIA_TYPE_FILTER);
@@ -361,15 +364,16 @@ public class RestClientBuilderImpl implements RestClientBuilder {
         T proxy = (T) Proxy.newProxyInstance(classLoader, interfaces,
                 new ProxyInvocationHandler(aClass, actualClient, getLocalProviderInstances(), client, beanManager));
         ClientHeaderProviders.registerForClass(aClass, proxy, beanManager);
-        return proxy;
-    }
+        return proxy;}
+    
 
     /**
      * Determines whether or not to default to using the URLConnection instead of the Apache HTTP Client.
      * If the {@code org.jboss.resteasy.microprofile.defaultToURLConnectionHttpClient} system property is {@code true},
      * then this method returns {@code true}. In all other cases it returns {@code false}
      */
-    private boolean useURLConnection() {
+    
+private boolean useURLConnection() {
         if (useURLConnection == null) {
             String defaultToURLConnection = getSystemProperty("org.jboss.resteasy.microprofile.defaultToURLConnectionHttpClient", "false");
             useURLConnection = defaultToURLConnection.toLowerCase().equals("true");

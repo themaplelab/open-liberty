@@ -78,7 +78,7 @@ public class NBAccept {
             if ((!dedicatedAcceptThread) && (!waitToAccept)) {
                 if (sharedAccept == null) {
                     sharedAccept = new NBAcceptChannelSelector(waitToAccept);
-                    sharedThread = new Thread(sharedAccept);
+                    sharedThread = Thread.ofVirtual().unstarted(sharedAccept);
 
                     sharedThread.setName("Shared TCPChannel NonBlocking Accept Thread");
                     // all TCPChannel Thread should be daemon threads
@@ -106,7 +106,7 @@ public class NBAccept {
             } else {
                 // Add a new dedicated accept
                 NBAcceptChannelSelector dedicatedAccept = new NBAcceptChannelSelector(waitToAccept);
-                Thread dedicatedThread = new Thread(dedicatedAccept);
+                Thread dedicatedThread  = Thread.ofVirtual().unstarted(dedicatedAccept);
 
                 dedicatedThread.setName("Dedicated TCPChannel NonBlocking Accept Thread:" + endPoint.getListenPort());
                 // all TCPChannel Thread should be daemon threads

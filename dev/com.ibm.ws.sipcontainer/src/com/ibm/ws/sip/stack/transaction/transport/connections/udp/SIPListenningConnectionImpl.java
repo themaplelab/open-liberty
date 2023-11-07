@@ -118,7 +118,7 @@ public class SIPListenningConnectionImpl
 	 * starts the listener thread
 	 */
 	public synchronized void listen() throws IOException {
-		m_listeningThread = new Thread(this, "Listenning Thread on " + m_lp);
+		m_listeningThread = Thread.ofVirtual().name("Listenning Thread on " + m_lp).unstarted(this);
 		m_listeningThread.start();
 	}
 

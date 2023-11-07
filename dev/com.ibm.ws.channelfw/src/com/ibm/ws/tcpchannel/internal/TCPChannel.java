@@ -732,7 +732,7 @@ public abstract class TCPChannel implements InboundChannel, OutboundChannel, FFD
         public Object run() {
             String threadName = "Statistics Logging Thread for: " + getExternalName();
 
-            Thread t = new Thread(statLogger);
+            Thread t  = Thread.ofVirtual().unstarted(statLogger);
             t.setName(threadName);
 
             // all TCPChannel Thread should be daemon threads

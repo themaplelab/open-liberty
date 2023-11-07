@@ -68,7 +68,7 @@ public class DispatcherWorkingThread extends AppQueueHandler implements Runnable
 			c_logger.traceDebug(this, "DispatcherWorkingThread#init", 
 					"creating/starting java thread to run this class = " + threadName);
 		}
-		_thread = new Thread(this, threadName);
+		_thread = Thread.ofVirtual().name(threadName).unstarted(this);
 		_thread.start();
 	}
 
