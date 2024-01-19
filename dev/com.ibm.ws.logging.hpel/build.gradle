@@ -21,6 +21,5 @@ test {
   dependsOn publishWLPJars
 }
 tasks.withType(JavaCompile) {
-  options.release = 19
-  options.compilerArgs.add('--enable-preview')
+  options.release = 21
 }

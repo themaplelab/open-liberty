@@ -13,12 +13,8 @@
 
 test {
     dependsOn ':cnf:copyMavenLibs'
-    doFirst {
-        jvmArgs = ['--enable-preview']
-    }
     systemProperty "com.ibm.ws.microprofile.faulttolerance.jse", "true"
 }
 tasks.withType(JavaCompile) {
-    options.release = 19
-    options.compilerArgs.add('--enable-preview')
+    options.release = 21
 }
