@@ -13,9 +13,6 @@
 
 test {
   dependsOn ':cnf:copyMavenLibs'
-  doFirst {
-    jvmArgs = ['--enable-preview']
-  }
   dependsOn ':com.ibm.ws.logging.hpel.binarylogviewer:publishToolJars'
   dependsOn ':com.ibm.ws.kernel.cmdline:publishWLPJars'
   dependsOn publishWLPJars
