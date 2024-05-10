@@ -124,7 +124,7 @@ public class InterruptibleThreadObject {
 	 */
 	public InterruptibleThreadObject(Class<?> interruptibleIOContextClass, Class<?> interruptibleLockContextClass) {
 			
-		threadId = Thread.currentThread().getId();
+		threadId = Thread.currentThread().threadId();
 		if (interruptibleIOContextClass != null) {
 			_interruptibleIOContextClass = interruptibleIOContextClass;
 			try {
@@ -208,7 +208,7 @@ public class InterruptibleThreadObject {
 	 * @param requestId A string representing the request that is starting or ending.
 	 */
 	public synchronized void clear(boolean newRequest, String requestId) {
-		if (Thread.currentThread().getId() != threadId) {
+		if (Thread.currentThread().threadId() != threadId) {
 			throw new IllegalStateException("An attempt was made to clear this InterruptibleThreadObject from a thread ID other than " + threadId);
 		}
 		/* deregister the jvm interrupt object */

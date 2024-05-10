@@ -2086,7 +2086,7 @@ public class ObjectManagerState
 
         LogicalUnitOfWork logicalUnitOfWork = internalTransaction.getLogicalUnitOfWork();
         internalTransaction.registeredTick = System.currentTimeMillis();  // for orphan diagnostics
-        internalTransaction.registeredTid = Thread.currentThread().getId();  // for orphan diagnostics
+        internalTransaction.registeredTid = Thread.currentThread().threadId();  // for orphan diagnostics
         internalTransaction.registeredName = Thread.currentThread().getName();  // for orphan diagnostics
         InternalTransaction registeredTransaction = (InternalTransaction) registeredInternalTransactions.put(new Long(logicalUnitOfWork.identifier),
                                                                                                              internalTransaction);
@@ -2136,7 +2136,7 @@ public class ObjectManagerState
 
         // Make the InternalTransaction available for reuse.
         internalTransaction.freeTick = System.currentTimeMillis();  // for orphan diagnostics
-        internalTransaction.freeTid = Thread.currentThread().getId();  // for orphan diagnostics
+        internalTransaction.freeTid = Thread.currentThread().threadId();  // for orphan diagnostics
         internalTransaction.freeName = Thread.currentThread().getName();  // for orphan diagnostics
         InternalTransaction freeTransaction = (InternalTransaction) freeTransactions.put(new Long(logicalUnitOfWork.identifier),
                                                                                          internalTransaction);
@@ -3157,7 +3157,7 @@ public class ObjectManagerState
                             cclass,
                             "<init>");
 
-            checkpointThread = new Thread(this);
+            checkpointThread = Thread.ofVirtual().unstarted(this);
 
             checkpointThread.setName("CheckpointHelper");
             // Run the CheckpointHelper in preference to other threads.
@@ -3481,7 +3481,7 @@ public class ObjectManagerState
                             cclass,
                             "<init>");
 
-            Thread shutdownThread = new Thread(this);
+            Thread shutdownThread  = Thread.ofVirtual().unstarted(this);
             shutdownThread.setName("ShutdownHelper");
             shutdownThread.start();
 

@@ -99,7 +99,7 @@ public class SIPListenningConnectionImpl
 		//if the port was not 0 , it will just set the same port 
 		m_lp.setPort( m_sock.getLocalPort() );
 		
-		Thread thread = new Thread( new ConnectionsListener( this ),"TLS Connections Listener on " + m_lp.getPort() );
+		Thread thread  = Thread.ofVirtual().name("TLS Connections Listener on " + m_lp.getPort()).unstarted(this);
 		isRunning = true;
 		thread.start();
 		if( c_logger.isTraceDebugEnabled())

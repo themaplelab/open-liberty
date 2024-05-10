@@ -2448,7 +2448,7 @@ public class FileLogOutput
                             cclass,
                             methodName);
 
-            flushThread = new Thread(this);
+            flushThread = Thread.ofVirtual().unstarted(this);
             flushThread.setName("FlushHelper");
             flushThread.setPriority(helperThreadPriority);
             flushThread.start();
@@ -3301,7 +3301,7 @@ public class FileLogOutput
                             cclass,
                             "<init>");
 
-            notifyThread = new Thread(this);
+            notifyThread = Thread.ofVirtual().unstarted(this);
             notifyThread.setName("NotifyHelper");
             notifyThread.setPriority(helperThreadPriority);
             lastPageNotified = notifyLogBuffer.numberOfPages - 1;

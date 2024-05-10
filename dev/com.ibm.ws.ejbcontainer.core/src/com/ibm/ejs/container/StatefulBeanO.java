@@ -1757,9 +1757,9 @@ public abstract class StatefulBeanO extends SessionBeanO {
         final boolean isTraceOn = TraceComponent.isAnyTracingEnabled();
 
         if (isTraceOn && tc.isEntryEnabled())
-            Tr.entry(tc, "lock(" + tx + ", thread=" + Thread.currentThread().getId() +
+            Tr.entry(tc, "lock(" + tx + ", thread=" + Thread.currentThread().threadId() +
                          ") : " + this + ", " + currentTx + ", activeOnThread=" +
-                         ((ivActiveOnThread == null) ? "null" : ivActiveOnThread.getId()));
+                         ((ivActiveOnThread == null) ? "null" : ivActiveOnThread.threadId()));
 
         // If the bean is eligible to be locked for use by the current thread,
         // and current transaction, then lock it now.                F743-22462.CR
@@ -1851,7 +1851,7 @@ public abstract class StatefulBeanO extends SessionBeanO {
     public void addLockWaiter() {
         if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled())
             Tr.debug(tc, "addLockWaiter : " + this +
-                         ", thread=" + Thread.currentThread().getId());
+                         ", thread=" + Thread.currentThread().threadId());
 
         ivThreadsWaiting = true;
     }

@@ -58,7 +58,7 @@ public class ThreadPool implements Runnable
 		m_threads = s_numberOfThreads == 0 ? null : new Thread[s_numberOfThreads];
 		if (m_threads != null) {
 			for (int i = 0; i < m_threads.length; i++) {
-				Thread thread = new Thread(this, "SipAppThread-" + i);
+				Thread thread  = Thread.ofVirtual().name("SipAppThread-" + i).unstarted(this);
 				thread.setDaemon(true);
 				thread.start();
 			}
