@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import com.ibm.ws.microprofile.faulttolerance.executor.impl.async.QueuedFuture;
 import com.ibm.ws.microprofile.faulttolerance.test.util.TestException;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Tests for basic functionality for QueuedFuture
@@ -50,10 +51,13 @@ public class QueuedFutureTest {
 
     @BeforeClass
     public static void setupExecutor() {
-        executor = Executors.newFixedThreadPool(10);
-    }
+ThreadFactory threadFactory = Thread.ofVirtual().factory();
 
-    @AfterClass
+        executor = Executors.newThreadPerTaskExecutor(threadFactory);}
+    
+
+    
+@AfterClass
     public static void cleanupExecutor() throws InterruptedException {
         executor.shutdownNow();
         executor.awaitTermination(5, TimeUnit.MINUTES);

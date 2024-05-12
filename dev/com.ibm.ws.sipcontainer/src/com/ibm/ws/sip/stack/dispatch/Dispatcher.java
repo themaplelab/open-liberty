@@ -135,7 +135,7 @@ public class Dispatcher implements Runnable
 		
 		if (m_threads != null) {
 			for (int i = 0; i < m_threads.length; i++) {
-				Thread thread = new Thread(this, "SIP Stack Dispatch-" + i);
+				Thread thread  = Thread.ofVirtual().name("SIP Stack Dispatch-" + i).unstarted(this);
 				thread.setDaemon(true);
 				thread.start();
 			}

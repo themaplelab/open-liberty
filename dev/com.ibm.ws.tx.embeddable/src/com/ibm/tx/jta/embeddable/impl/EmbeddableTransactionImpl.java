@@ -408,7 +408,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.entry(tc, "suspendAssociation",
-                     new Object[] { notify, _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                     new Object[] { notify, _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
 
         _suspendedAssociations++;
 
@@ -417,7 +417,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.exit(tc, "suspendAssociation",
-                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
     }
 
     /*
@@ -436,13 +436,13 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.entry(tc, "resumeAssociation",
-                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
 
         resumeAssociation(true);
 
         if (traceOn && tc.isEntryEnabled())
             Tr.exit(tc, "resumeAssociation",
-                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
     }
 
     /**
@@ -468,7 +468,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.entry(tc, "resumeAssociation",
-                     new Object[] { allowSetRollback, _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                     new Object[] { allowSetRollback, _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
 
         // if another thread is active we have to wait
         // doSetRollback indicates if this method has marked the transaction for rollbackOnly
@@ -499,13 +499,13 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
             final TRANSACTION_ROLLEDBACK trb = new TRANSACTION_ROLLEDBACK("Context already active");
             if (traceOn && tc.isEntryEnabled())
                 Tr.exit(tc, "resumeAssociation throwing rolledback",
-                        new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread", trb });
+                        new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread", trb });
             throw trb;
         }
 
         if (traceOn && tc.isEntryEnabled())
             Tr.exit(tc, "resumeAssociation",
-                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
     }
 
     /*
@@ -539,7 +539,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.entry(tc, "addAssociation",
-                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
 
         if (_activeAssociations > _suspendedAssociations) {
             if (traceOn && tc.isDebugEnabled())
@@ -556,7 +556,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
             final TRANSACTION_ROLLEDBACK trb = new TRANSACTION_ROLLEDBACK("Context already active");
             if (traceOn && tc.isEntryEnabled())
                 Tr.exit(tc, "addAssociation throwing rolledback",
-                        new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread", trb });
+                        new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread", trb });
             throw trb;
         }
 
@@ -565,7 +565,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.exit(tc, "addAssociation",
-                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
     }
 
     /**
@@ -578,7 +578,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.entry(tc, "removeAssociation",
-                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                     new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
 
         _activeAssociations--;
 
@@ -592,7 +592,7 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
 
         if (traceOn && tc.isEntryEnabled())
             Tr.exit(tc, "removeAssociation",
-                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.getId()) : "Not on a thread" });
+                    new Object[] { _activeAssociations, _suspendedAssociations, _thread != null ? String.format("%08X", _thread.threadId()) : "Not on a thread" });
     }
 
     /**
@@ -1169,6 +1169,6 @@ public class EmbeddableTransactionImpl extends com.ibm.tx.jta.impl.TransactionIm
         // NullPointerException when getId() is called
         Thread local_thread = _thread;
         return super.toString() + ",active=" + _activeAssociations + ",suspended=" + _suspendedAssociations + ","
-               + (local_thread != null ? "thread=" + String.format("%08X", local_thread.getId()) : "Not on a thread, globalId=" + _globalId);
+               + (local_thread != null ? "thread=" + String.format("%08X", local_thread.threadId()) : "Not on a thread, globalId=" + _globalId);
     }
 }

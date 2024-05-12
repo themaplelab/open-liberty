@@ -60,7 +60,7 @@ public class RequestContext {
 
 		requestId = idgen.getNextRequestId();
 		RequestProbeService.requestIDExtension.setValue(requestId.getId());
-		threadId = Thread.currentThread().getId();
+		threadId = Thread.currentThread().threadId();
 		eventCount = 0;
 	}
 
@@ -193,7 +193,7 @@ public class RequestContext {
 		 for (int i = 0; i < numOfThreads; i++)  {
                       Thread thread = threads[i];
                       // If thread ID matches the requestThreadId, return the stackTrace.
-                      if (thread.getId() == threadId) {
+                      if (thread.threadId() == threadId) {
                          for (StackTraceElement stackTraceElement : thread.getStackTrace()) {
                              requestTheadStackStr.append("\t at " + stackTraceElement + "\n");
                          }

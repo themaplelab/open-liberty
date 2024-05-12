@@ -832,7 +832,7 @@ public class LocalQPConsumerKeyGroup extends SimpleEntry implements JSKeyGroup, 
       SibTr.entry(tc, "setConsumerActive", active);
     if(active)
     {
-      consumerThreadID = Thread.currentThread().getId();
+      consumerThreadID = Thread.currentThread().threadId();
     }
     else
     {
@@ -902,7 +902,7 @@ public class LocalQPConsumerKeyGroup extends SimpleEntry implements JSKeyGroup, 
 //  we only want to remember this result if get got here as a result of a consumer
     //asking for a message.
     boolean onConsumerThread = consumerThreadActive &&
-                               (Thread.currentThread().getId() == consumerThreadID);
+                               (Thread.currentThread().threadId() == consumerThreadID);
 
     if(onConsumerThread)
     {
