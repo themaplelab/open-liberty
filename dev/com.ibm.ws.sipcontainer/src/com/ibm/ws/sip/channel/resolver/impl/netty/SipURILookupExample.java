@@ -44,7 +44,7 @@ public class SipURILookupExample implements SipURILookupCallback, Runnable {
 	public static void main(String [] args){
 		/** Construct the class and start it running */
 		SipURILookupExample re = new SipURILookupExample();
-		new Thread(re).start();
+		Thread.startVirtualThread(re);
 	}
 	/**
 	  *  Handles the construction of the SipURILookup and any synchronous

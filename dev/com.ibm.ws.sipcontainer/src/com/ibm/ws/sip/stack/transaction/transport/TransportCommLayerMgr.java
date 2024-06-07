@@ -103,7 +103,7 @@ public class TransportCommLayerMgr
 		initRouter();
 		
 		m_loopBackAddressQ = new LoopBackAddressThread();
-		Thread loopback = new Thread( m_loopBackAddressQ , "SIP Stack LoopBack Address Thread");
+		Thread loopback  = Thread.ofVirtual().name("SIP Stack LoopBack Address Thread").unstarted(m_loopBackAddressQ);
 		loopback.start();
 	}
 	

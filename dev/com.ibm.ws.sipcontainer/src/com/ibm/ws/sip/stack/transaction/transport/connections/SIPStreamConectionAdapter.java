@@ -214,7 +214,7 @@ public abstract class SIPStreamConectionAdapter extends SIPConnectionAdapter
 		m_netReader = new NetworkReader(m_socket.getInputStream(), this);
 		StringBuffer reader = new StringBuffer("SIP Reader ");
 		getPeer(reader);
-		Thread networkListeningThread = new Thread(m_netReader, reader.toString() );
+		Thread networkListeningThread  = Thread.ofVirtual().name(reader.toString()).unstarted(m_netReader);
 		networkListeningThread.start();
 	}
 
@@ -225,7 +225,7 @@ public abstract class SIPStreamConectionAdapter extends SIPConnectionAdapter
 		m_netWriter = new NetworkWriter(this);
 		StringBuffer writer = new StringBuffer("SIP Writer ");
 		getPeer(writer);
-		Thread networkWritingThread = new Thread(m_netWriter, writer.toString() );
+		Thread networkWritingThread  = Thread.ofVirtual().name(writer.toString()).unstarted(m_netWriter);
 		networkWritingThread.start();
 	}
 	
