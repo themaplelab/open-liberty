@@ -78,10 +78,10 @@ public class TestProcess {
         }
 
         ProcessStreamReader outReader = new ProcessStreamReader(process.getInputStream(), outputBuilder);
-        new Thread(outReader).start();
+        Thread.startVirtualThread(outReader);
 
         ProcessStreamReader errReader = new ProcessStreamReader(process.getErrorStream(), errorBuilder);
-        new Thread(errReader).start();
+        Thread.startVirtualThread(errReader);
 
         while (true) {
             try {

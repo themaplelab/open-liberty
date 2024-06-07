@@ -185,7 +185,7 @@ public class EmbeddedServerImpl implements Server {
             opQueue = Executors.newCachedThreadPool(new ThreadFactory() {
                 @Override
                 public Thread newThread(Runnable r) {
-                    Thread t = new Thread(r);
+                    Thread t  = Thread.ofVirtual().unstarted(r);
                     t.setDaemon(true);
                     t.setName("EmbeddedLibertyOperation-" + t.getName());
                     return t;
@@ -629,7 +629,7 @@ public class EmbeddedServerImpl implements Server {
      * @return
      */
     private Thread createServerThread(ServerTask r) {
-        Thread t = new Thread(r);
+        Thread t  = Thread.ofVirtual().unstarted(r);
         t.setName("EmbeddedLibertyServer-" + t.getName());
         return t;
     }

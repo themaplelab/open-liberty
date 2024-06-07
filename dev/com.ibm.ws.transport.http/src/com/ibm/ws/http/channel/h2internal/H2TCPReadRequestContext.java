@@ -79,7 +79,7 @@ public class H2TCPReadRequestContext implements TCPReadRequestContext {
                     doWork(nB, cb, p);
                 }
             };
-            new Thread(r).start();
+            Thread.startVirtualThread(r);
         }
 
         return vc;

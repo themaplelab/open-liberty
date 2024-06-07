@@ -126,7 +126,7 @@ public class UtilImpl_Utils {
         return AccessController.doPrivileged( new PrivilegedAction<Thread>() {
             @Override
             public Thread run() {
-                return new Thread(runnable, threadName);
+                return Thread.ofVirtual().name(threadName).unstarted(runnable);
             }
         } );
     }
