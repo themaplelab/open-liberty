@@ -267,7 +267,7 @@ public class ZipFileReaper {
 
     static {
         logEmitter = new DeferredLogEmitter();
-        logThread = Thread.ofVirtual().name("reaper logger").unstarted(logEmitter);
+        logThread = new Thread(logEmitter, "reaper logger");
         logThread.setDaemon(true);
         logThread.start();
     }
@@ -687,12 +687,12 @@ public class ZipFileReaper {
         this.reaperLock = new ReaperLock();
 
         this.reaperRunnable = new ReaperRunnable(this);
-        this.reaperThread = Thread.ofVirtual().name("zip file reaper").unstarted(this.reaperRunnable);
+        this.reaperThread = new Thread(this.reaperRunnable, "zip file reaper");
         this.reaperThread.setDaemon(true);
 
         if ( this.debugState ) {
             this.reaperShutdown = new ReaperShutdownRunnable(this.reaperThread);
-            this.reaperShutdownThread = Thread.ofVirtual().unstarted(this.reaperShutdown);
+            this.reaperShutdownThread = new Thread(this.reaperShutdown);
         } else {
             this.reaperShutdown = null;
             this.reaperShutdownThread = null;
@@ -1021,7 +1021,7 @@ public class ZipFileReaper {
     private void introspectReaperThread(PrintWriter output) {
         output.println();
         output.println("  Reaper [ " + reaperThread + " ]");
-        output.println("    Id          [ " + reaperThread.threadId() + " ]"); 
+        output.println("    Id          [ " + reaperThread.getId() + " ]"); 
         output.println("    Name        [ " + reaperThread.getName() + " ]"); 
         output.println("    Daemon      [ " + reaperThread.isDaemon() + " ]");
         output.println("    Priority    [ " + reaperThread.getPriority() + " ]");
