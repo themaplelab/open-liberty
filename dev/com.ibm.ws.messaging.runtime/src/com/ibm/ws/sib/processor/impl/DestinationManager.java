@@ -5496,7 +5496,7 @@ public final class DestinationManager extends SIMPItemStream
         //every time create DeletePubSubMsgsThread as this is called from
         // a new DestinationManager.
 
-        Thread delThread = new Thread((new DeletePubSubMsgsThread(messageProcessor)), "startDeletePubSubMsgsThread");
+        Thread delThread  = Thread.ofVirtual().name("startDeletePubSubMsgsThread").unstarted(new DeletePubSubMsgsThread(messageProcessor));
         delThread.setPriority(1);
         delThread.start();
 

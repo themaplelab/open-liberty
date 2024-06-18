@@ -160,7 +160,7 @@ public class OpentracingTracerManager {
         if (TraceComponent.isAnyTracingEnabled() && tc.isEntryEnabled()) {
             Thread currentThread = Thread.currentThread();
             String threadName = currentThread.getName();
-            long threadId = currentThread.getId();
+            long threadId = currentThread.threadId();
             Tr.exit(tc,
                     methodName + " (" + threadName + ":" + Long.toString(threadId) + ")",
                     OpentracingUtils.getTracerText(tracer));

@@ -149,7 +149,7 @@ public class DataFormatHelper {
      * @return the string representation of the thread id
      */
     public static final String getThreadId(Thread thread) {
-        return DataFormatHelper.padHexString((int) thread.getId(), 8);
+        return DataFormatHelper.padHexString((int) thread.threadId(), 8);
     }
 
     /**

@@ -95,7 +95,7 @@ final class ThreadFactoryImpl implements ThreadFactory {
                     // slower than using normal Threads.
                     thread = new LibertyThread(threadGroup, runnable, name);
                 } else {
-                    thread = new Thread(threadGroup, runnable, name);
+                    thread = Thread.ofVirtual().name(name).unstarted(runnable);
                 }
                 // The daemon, priority, and context class loader are implicitly
                 // copied from the creating thread, so reset them all.

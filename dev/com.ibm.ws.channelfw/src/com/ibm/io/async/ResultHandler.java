@@ -443,7 +443,7 @@ final class ResultHandler {
         @Override
         public Object run() {
             String threadName = "Completion Processing Thread for group: " + getGroupID();
-            Thread newThread = new Thread(getProcessCompletionEventTask());
+            Thread newThread  = Thread.ofVirtual().unstarted(getProcessCompletionEventTask());
             newThread.setName(threadName);
 
             // all TCPChannel Thread should be daemon threads

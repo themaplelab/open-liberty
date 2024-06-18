@@ -510,7 +510,7 @@ public class ServerCommandListener extends ServerCommand implements CheckpointHo
         if (closed) {
             Utils.tryToClose(sc);
         } else {
-            Thread thread = new Thread(new ResponseThread(command, sc), "kernel-" + command + "-command-response");
+            Thread thread  = Thread.ofVirtual().name("kernel-" + command + "-command-response").unstarted(new ResponseThread(command, sc));
 
             // We allow a maximum of one outstanding status start or stop command
             Thread oldThread = responseThread.getAndSet(thread);

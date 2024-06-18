@@ -322,7 +322,7 @@ public class SpillDispatcher extends DispatcherBase
         {
             String threadName = "sib.SpillDispatcher-"+meUUID+i;
             _workers[i] = new SpillDispatcherThread(i, threadName);
-            _threads[i] = new Thread(_workers[i], threadName);
+            _threads[i] = Thread.ofVirtual().name(threadName).unstarted(_workers[i]);
             _threads[i].setDaemon(true);
             _threads[i].setPriority(Thread.NORM_PRIORITY + priorityDelta);
             _threads[i].start();
